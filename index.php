@@ -54,6 +54,9 @@ and open the template in the editor.
         <script type="text/javascript" src="index.js" > </script>
         
         
+        
+        
+        
     </head>
     <body>
         
