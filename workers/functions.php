@@ -8,11 +8,16 @@
 
             function getDbConnection() {
                 
-                
+                /*
                 $username = 'workersUser';
                 $password = 'qwerty';
                 $conn = new PDO('mysql:host=localhost;dbname=workers', $username, $password);
-                  
+                */
+                 
+                $username = 'test';
+                $password = 'qwerty';
+                $conn = new PDO('mysql:host=localhost;dbname=task_management', $username, $password);
+                 
                 /*
                 $username = 'u34712_workers';
                 $password = 'qwerty123';
@@ -84,50 +89,4 @@
                 return $ok;
             }
 
-            
-            function addWorker($conn, $name, $age, $salary, &$errorStr, &$id = 0) {
-                if (!is_numeric($age)) {
-                    $errorStr = 'Возраст должен быть числом ';
-                    return false;
-                }
-                if (!is_numeric($salary)) {
-                    $errorStr = 'Зарплата должна быть числом';
-                    return false;
-                }
-                $stmt = $conn->prepare('Insert into workers(name, age, salary) values(:name, :age, :salary)');
-                $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-                $stmt->bindParam(':age', $age, PDO::PARAM_INT);
-                $stmt->bindParam(':salary', $salary, PDO::PARAM_INT);
-                $ok = $stmt->execute();
-                if ($ok) {
-                    $id = $conn->lastInsertId();
-                }
-                if (!$ok) {
-                    $errorStr = $stmt->errorInfo()[2];
-                }
-                return $ok;
-            }
-            
-            function deleteWorker($conn, $id, &$errorArray) {
-               $stmt = $conn->prepare('DELETE FROM workers where id= ?'); 
-               $stmt->bindParam(1, $id, PDO::PARAM_INT);
-               $ok = $stmt->execute();
-               $errorArray = $stmt->errorInfo();
-               return $ok;
-            }
-            
-            function getWorkersListStatement($conn, $filter = false, $salary = '') {
-                $str = 'SELECT * FROM workers ';
-                if ($filter) {
-                    $str .= ' where salary = :salary ';
-                }
-                $str .= ' order by id ';
-                $stmt = $conn->prepare($str);
-                if ($filter) {
-                    $stmt->bindParam('salary', $salary);
-                }
-                $stmt->execute();
-                return $stmt;
-            }
-            
 ?>
